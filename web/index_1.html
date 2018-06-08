@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    
+    <head>
+    <title>SEQUENCIAMENTO DE TRAVESSAS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <link rel="stylesheet" href="//bootswatch.com/lumen/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+    <body>
+    <h1 style="color: white; font-size: 60px; text-align: center"><strong>SEQUENCIAMENTO<br>DE TRAVESSAS</strong></h1>
+    <br />
+    <!-- 
+       Adicionando o evento keyup à área de texto, assim a cada caracter digitado 
+       todo o conteúdo do campo é enviado para o firebase
+    -->
+    <div class="col-md-4" style="background-color: black; opacity: 1; text-align: center ">
+   <hr>    
+   <textarea id="text" rows="3" cols="60" style="text-align: center"></textarea>   
+    <hr>    
+   </div>
+    <br><br>
+    
+    <div style="visibility: hidden"><input type="text" id="t1" style="text-align: center"><input type="text" id="t2" style="text-align: center"><input type="text" id="t3" style="text-align: center"></div><br>
+   
+    <div class="btn-group,col-md-4" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-primary btn-lg"><a href="arquivos/Travessa01.pdf" target="framename" style="color:white">TRAVESSA 01</a></button>
+    <button type="button" class="btn btn-primary btn-lg"><a href="arquivos/Travessa02.pdf" target="framename" style="color:white">TRAVESSA 02</a></button>
+    <button type="button" class="btn btn-primary btn-lg"><a href="arquivos/Travessa03.pdf" target="framename" style="color:white">TRAVESSA 03</a></button>
+    </div>
+    <br>
+    
+    <div class="col-md-4">
+        <button class="btn btn-lg btn-block btn-primary" id="solicitarSequencia">SOLICITAR SEQUÊNCIA</button>
+        
+    </div>
+
+    <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <script src="//www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+    <script src="js/app.js"></script>    
+</body>
+    
+    
+<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBGtOj80meWXPgrVI7D5T6rppoI6rKsweI",
+    authDomain: "sequenciamento-de-travessas.firebaseapp.com",
+    databaseURL: "https://sequenciamento-de-travessas.firebaseio.com",
+    projectId: "sequenciamento-de-travessas",
+    storageBucket: "",
+    messagingSenderId: "862067016182"
+  };
+  firebase.initializeApp(config);
+
+    // Definindo a referência com a qual trabalharemos: "text"
+    var textRef = firebase.database().ref('text'); 
+    
+
+    // "Escutando" toda e qualquer alteração da chave "text"
+    textRef.on('value', function(snapshot) {
+        // Escrevendo o que foi recebido em tempo real no nosso campo de texto
+        document.getElementById('text').value = snapshot.val();
+    });
+
+    // Também criando uma função para que o que digitarmos seja enviado ao Firebase
+    function writeText(text) {
+        var content = {};
+        content['/text/'] = text;
+        return firebase.database().ref().update(content);
+    }
+    
+    // Solicitar sequencia
+    $("#solicitarSequencia").click(function(){
+	 text.value = "AGUARDANDO SEQUÊNCIA";
+         writeText(text.value);         
+    }); 
+  
+
+    
+</script>
+
+</html>

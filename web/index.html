@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    
+    <head>
+    <title>SEQUENCIAMENTO DE TRAVESSAS</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <link rel="stylesheet" href="//bootswatch.com/lumen/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+    <body>
+    <h1 style="color: white; font-size: 60px; text-align: center"><strong>SEQUENCIAMENTO<br>DE TRAVESSAS</strong></h1>
+    <br />
+    <!-- 
+       Adicionando o evento keyup à área de texto, assim a cada caracter digitado 
+       todo o conteúdo do campo é enviado para o firebase
+    -->
+    <div class="col-md-4" style="background-color: black; opacity: 1; text-align: center ">
+   <hr>    
+   <textarea id="text" rows="3" cols="60" style="text-align: center"></textarea>   
+    <hr>    
+   </div>
+    <br><br>
+    
+    <div><input type="text" id="t1" style="text-align: center"><input type="text" id="t2" style="text-align: center"><input type="text" id="t3" style="text-align: center"></div><br>
+    
+    <div class="col-md-4">
+        <button class="btn btn-lg btn-block btn-primary" id="addTravessa1">TRAVESSA 1</button>
+        <button class="btn btn-lg btn-block btn-primary" id="addTravessa2">TRAVESSA 2</button>
+        <button class="btn btn-lg btn-block btn-primary" id="addTravessa3">TRAVESSA 3</button><br>
+        <button class="btn btn-lg btn-block btn-primary" id="addSequencia">SEQUENCIAR</button>
+        <button class="btn btn-lg btn-block btn-primary" id="limparSequencia">LIMPAR</button>
+    </div>
+
+    <script src="//code.jquery.com/jquery-2.2.4.min.js"></script>
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <script src="//www.gstatic.com/firebasejs/3.3.0/firebase.js"></script>
+    <script src="js/app.js"></script>    
+</body>
+    
+    
+<script src="https://www.gstatic.com/firebasejs/5.0.4/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBGtOj80meWXPgrVI7D5T6rppoI6rKsweI",
+    authDomain: "sequenciamento-de-travessas.firebaseapp.com",
+    databaseURL: "https://sequenciamento-de-travessas.firebaseio.com",
+    projectId: "sequenciamento-de-travessas",
+    storageBucket: "",
+    messagingSenderId: "862067016182"
+  };
+  firebase.initializeApp(config);
+
+    // Definindo a referência com a qual trabalharemos: "text"
+    var textRef = firebase.database().ref('text'); 
+    
+
+    // "Escutando" toda e qualquer alteração da chave "text"
+    textRef.on('value', function(snapshot) {
+        // Escrevendo o que foi recebido em tempo real no nosso campo de texto
+        document.getElementById('text').value = snapshot.val();
+    });
+
+    // Também criando uma função para que o que digitarmos seja enviado ao Firebase
+    function writeText(text) {
+        var content = {};
+        content['/text/'] = text;
+        return firebase.database().ref().update(content);
+    }
+    
+    // Alimenta text-area
+    $("#addSequencia").click(function(){
+	 text.value = t1.value + '\n'+ t2.value + '\n' + t3.value;
+         writeText(text.value);
+         t1.value = t2.value = t3.value = "";
+    });
+    
+    // Lógica do sequenciamento
+    $("#addTravessa1").click(function(){
+	 if(t1.value == "" && t2.value == "" && t3.value == "")
+             t1.value="TRAVESSA 01";
+         else if(t1.value != "" && t2.value == "" && t3.value == "")
+             t2.value="TRAVESSA 01";
+         else if(t1.value != "" && t2.value != "" && t3.value == "")
+             t3.value="TRAVESSA 01";         
+    });
+    
+    $("#addTravessa2").click(function(){
+	 if(t1.value == "" && t2.value == "" && t3.value == "")
+             t1.value="TRAVESSA 02";
+         else if(t1.value != "" && t2.value == "" && t3.value == "")
+             t2.value="TRAVESSA 02";
+         else if(t1.value != "" && t2.value != "" && t3.value == "")
+             t3.value="TRAVESSA 02";         
+    });
+    
+    $("#addTravessa3").click(function(){
+	 if(t1.value == "" && t2.value == "" && t3.value == "")
+             t1.value="TRAVESSA 03";
+         else if(t1.value != "" && t2.value == "" && t3.value == "")
+             t2.value="TRAVESSA 03";
+         else if(t1.value != "" && t2.value != "" && t3.value == "")
+             t3.value="TRAVESSA 03";         
+    });
+    
+    // Limpar
+    $("#limparSequencia").click(function(){	 
+         t1.value = t2.value = t3.value = "";
+    });
+
+    
+</script>
+
+</html>
